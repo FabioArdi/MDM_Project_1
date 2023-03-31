@@ -28,15 +28,11 @@ def predict():
     predicted_class_label = model.config.id2label[predicted_class_idx]
 
     # Save the uploaded image to a temporary folder
-    temp_image_path = f"Projekt_1/temp/{file.filename}"
+    temp_image_path = f"/temp/{file.filename}"
     image.save(temp_image_path)
 
-    saved_image_path = f"/temp/{file.filename}"
-
-    print(temp_image_path)
-
     # Pass the predicted class label and the temporary image path to the result page
-    return render_template('result.html', label=predicted_class_label, image_url=saved_image_path)
+    return render_template('result.html', label=predicted_class_label, image_url=temp_image_path)
 
     
 
