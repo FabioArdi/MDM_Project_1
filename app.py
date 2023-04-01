@@ -1,26 +1,30 @@
 from flask import Flask, render_template, request, send_file
 from transformers import AutoFeatureExtractor, CvtForImageClassification
 from PIL import Image
-import os
 
 app = Flask(__name__)
 feature_extractor = AutoFeatureExtractor.from_pretrained('microsoft/cvt-13')
 model = CvtForImageClassification.from_pretrained('microsoft/cvt-13')
 
+# Home page
 @app.route('/')
 def home():
     return render_template('index.html')
 
+# Serve the uploaded image
 @app.route('/temp/<filename>')
 def serve_image(filename):
     return send_file(f'temp/{filename}', mimetype='image/jpeg')
 
+# Predict the class label of the uploaded image and display the result
 @app.route('/predict', methods=['POST'])
 def predict():
 
+    # Get the uploaded image
     file = request.files['image']
     image = Image.open(file.stream).convert('RGB')
 
+    # Predict the class label of the uploaded image
     inputs = feature_extractor(images=image, return_tensors="pt")
     outputs = model(**inputs)
     logits = outputs.logits
