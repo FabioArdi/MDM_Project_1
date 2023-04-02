@@ -31,7 +31,6 @@ def predict():
     predicted_class_idx = logits.argmax(-1).item()
     predicted_class_label = model.config.id2label[predicted_class_idx]
 
-
     # Save the uploaded image to a temporary folder
     temp_image_path = f"temp/{file.filename}"
     image.save(temp_image_path)
